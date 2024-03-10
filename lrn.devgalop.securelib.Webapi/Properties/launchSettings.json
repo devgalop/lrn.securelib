@@ -9,32 +9,19 @@
     }
   },
   "profiles": {
-    "http": {
+    "dev": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5201",
+      "applicationUrl": "http://localhost:5200",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7100;http://localhost:5201",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AUTH_SECRET_KEY": "558ad86aa09727842f6f81a0a84d829b9cc5e7965c0d84415fa5510c306d7cd0",
+        "AES_KEY": "0IQQftlC4FvJnh35TX1JYw==",
+        "AES_IV": "mEu1BD7nPyvWPm0sG3roeQ==",
+        "RSA_PUBLIC_KEY": "xHxQtZY8VGHA3hA/MXG0+J5ROov8Zd6m2Yi3MHoph9M4d44yw8ciPwpmZpyW+vlBJw9DfD4mlcA5JEX+SdHZManO+l7plYYJK1M3YlEVR69kwkTWTMnDKdqSupRnBumz8P+pjfaEsS+WfFWUGbh37kJ1Umz6cJ3ohDM3DeuNATRF89a2F7TubBzhjFz7HXDl/NPQqY+/RZ17L875qpzrYb/WvXYggMZrH94FgGUhiob0FwQ7kGJxqXDU6cHc1M8HGrEhkzkvFdJXOFbdfywtR7zSP44ZQW6YdeGZDYdynqpAGeErqgzjU7o68z/O+H9/x26VzwmYCZ89W+yoPfzb+Q==\r\nAQAB\r\n",
+        "RSA_PRIVATE_KEY": "xHxQtZY8VGHA3hA/MXG0+J5ROov8Zd6m2Yi3MHoph9M4d44yw8ciPwpmZpyW+vlBJw9DfD4mlcA5JEX+SdHZManO+l7plYYJK1M3YlEVR69kwkTWTMnDKdqSupRnBumz8P+pjfaEsS+WfFWUGbh37kJ1Umz6cJ3ohDM3DeuNATRF89a2F7TubBzhjFz7HXDl/NPQqY+/RZ17L875qpzrYb/WvXYggMZrH94FgGUhiob0FwQ7kGJxqXDU6cHc1M8HGrEhkzkvFdJXOFbdfywtR7zSP44ZQW6YdeGZDYdynqpAGeErqgzjU7o68z/O+H9/x26VzwmYCZ89W+yoPfzb+Q==\r\nAQAB\r\n0irhl+wPVX5eZrtInPaHm0WbKvWf6RZSZ7j/fIlMJKVavWVdPeH1K5bm8xc5PRpc7CcDbol1aOgW7QX4cMVaDhPyl+/qkMAW/bflpt5QfoFoJPvM8hDYIZ8BStpYvB0cJNny9+62ngZC3T5AUgeipWhoO+Xd0sS00k9MOkIWkA8=\r\n71WbveGKJIk7Qls3I6Qowi4mNzyFDyrTOjbOCiDZiFQpE0QoUjMoweRnSPhgOKZi7fsDMZwRhS0OSlXTqXU6m9UFIo1b0+7+anVB+optRbKfH6tJAqZ7f45tcNgc85G8Fjmcr40WFGOAfAwI2RVQvKgZtof9QjtXy6ZjyoZ8y3c=\r\ne+PtUmpEa8hvi62xU138eGqi2sMqffO7pgsnCFnDOgMDp4weWAFgTk7JW9l/02Y8CrXAzyNWw/20rgqL9qZPvObDZg92vdeOdgg255Q77ScJpmuM19FYJxGdaGuoTVP3qD2WfdMJccQNHHC65+A6X7lZYJ3TkpCEa0l1jQ4yUL8=\r\nWURY/o2s9MuqqqlS+5wzB5om7ttH1cxnVIM0flqaSFr7pw/46g/i187VJ0ZcvURyCclh+5L2hfG0Ls2sULxEy/K8I5MN+RJfGl356fTPpPtmlm1Qoghub7kz4K76vW5R9QgwBNpereQe/CWQ90cYAgXA8W/valCwAmlhNxzKVyk=\r\nZh7zbOomdZNhNKCI106W3uzqq+2MpK/fJXG6nJ2MeA0FqAk38fbAidfE87y/YHbtbc7qFyx3r1rZcRxHwFdAeyinJATMNsDhWBL7HvuXG+yN7MJvdxa+1+C6Hex2vSd3rE6NtDlr7PK+nLm0shDD8nlQbIr1T+EOgbWkCHI6JTI=\r\ngUWBHFeBzcqax/9MdE1pUYFn0+sx3hwFDm4iiGR3WoOfTRljUOd9IpjHEo/HzcucEAS808tYO4JClhju2saT7VbZdGRprhSHh9eyQp8yLv24fxAnJlJAcxL5IoRs3GF6H/81IM+mMaUrjxYG4H07eqiC4/4LL3jU99VyTVhCZx1Dg1i0P02c4FxtEy7ARjJCIlzcDPlVgx0O9Et/zDin+JA1N304p3wtXc20LN/zYEf8TfFlBYLzKOgu+q1MoYfwtLxUlF4uyDVZ2LP1BpUR0QPL6xpwf+SJ+UKJXFdtN7en0qZjHsLg662gfjf3SoT/L9C1FUUytWOgN/WBXchR2Q==\r\n"
       }
     }
   }
