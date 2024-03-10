@@ -7,15 +7,13 @@ WORKDIR /src
 COPY ["lrn.devgalop.securelib.Core", "./lrn.devgalop.securelib.Core"]
 COPY ["lrn.devgalop.securelib.Infrastructure", "./lrn.devgalop.securelib.Infrastructure"]
 COPY ["lrn.devgalop.securelib.Webapi", "./lrn.devgalop.securelib.Webapi"]
-
-RUN dotnet restore "./lrn.devgalop.securelib.Core/lrn.devgalop.securelib.Core.csproj"
-RUN dotnet restore "./lrn.devgalop.securelib.Infrastructure/lrn.devgalop.securelib.Infrastructure.csproj"
-RUN dotnet restore "./lrn.devgalop.securelib.Webapi/lrn.devgalop.securelib.Webapi.csproj"
+COPY ["lrn.devgalop.securelib.Tests", "./lrn.devgalop.securelib.Tests"]
 
 COPY . .
 WORKDIR "/src/."
 
 RUN dotnet build "lrn.devgalop.securelib.Webapi/lrn.devgalop.securelib.Webapi.csproj" -c Release -o /app/build
+RUN dotnet test "lrn.devgalop.securelib.Tests/lrn.devgalop.securelib.Tests.csproj"
 
 #publish stage
 FROM build AS publish
