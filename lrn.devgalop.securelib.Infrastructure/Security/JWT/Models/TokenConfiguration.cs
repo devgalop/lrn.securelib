@@ -12,7 +12,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Models
         public bool ValidateIssuer { get; set; } = false;
         public bool ValidateAudience { get; set; } = false;
         public bool ValidateLifeTime { get; set; } = false;
-        public bool ValidateIssuerSigningKey { get; set; } = true;
+        public bool ValidateIssuerSigningKey { get; set; } = false;
 
         public byte[] GetSigingKey(string key)
         {

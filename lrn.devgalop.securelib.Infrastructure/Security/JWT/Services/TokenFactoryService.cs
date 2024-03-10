@@ -32,7 +32,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(GetClaims(claims)),
-                    Expires = DateTime.UtcNow.AddSeconds(duration)
+                    Expires = DateTime.UtcNow.AddSeconds(duration),
+                    SigningCredentials = credentials
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return new()
@@ -58,7 +59,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
         {
             try
             {
-                if(!string.IsNullOrEmpty(token)) throw new ArgumentNullException("Token is mandatory to be validated");
+                if(string.IsNullOrEmpty(token)) throw new ArgumentNullException("Token is mandatory to be validated");
                 if(tokenValidationParameters is null) throw new ArgumentNullException("Validation parameters cannot be null");
 
                 var tokenHandler = new JwtSecurityTokenHandler();
