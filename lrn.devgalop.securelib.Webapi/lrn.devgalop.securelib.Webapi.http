@@ -1,0 +1,6 @@
+@lrn.devgalop.securelib.Webapi_HostAddress = http://localhost:5201
+
+GET {{lrn.devgalop.securelib.Webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
