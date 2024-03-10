@@ -7,6 +7,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - HTTP_PORTS=5000
       - AUTH_SECRET_KEY=558ad86aa09727842f6f81a0a84d829b9cc5e7965c0d84415fa5510c306d7cd0
       - AES_KEY=0IQQftlC4FvJnh35TX1JYw==
       - AES_IV=mEu1BD7nPyvWPm0sG3roeQ==
