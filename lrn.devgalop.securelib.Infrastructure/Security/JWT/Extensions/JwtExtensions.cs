@@ -29,12 +29,13 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions
                 {
                     var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
                     opt.RequireHttpsMetadata = false;
-                    //Remeber those conditions when send to validate the token
+                    //Remeber those conditions when send to validate the token in middleware
                     opt.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = config.ValidateAudience,
                         ValidateIssuer = config.ValidateIssuer,
                         ValidateLifetime = config.ValidateLifeTime,
+                        ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
                         IssuerSigningKey = signingKey
                     };
                 });
