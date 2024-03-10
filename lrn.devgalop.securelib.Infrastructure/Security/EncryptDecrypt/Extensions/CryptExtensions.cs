@@ -22,5 +22,17 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Extensio
             services.AddTransient(_ => aesConfig);
             services.AddTransient<IAesCryptService, AesCryptService>();
         }
+
+        public static void AddRSAEncryption(this IServiceCollection services)
+        {
+            RsaCryptType rsaConfig = new()
+            {
+                PublicKey = Environment.GetEnvironmentVariable("RSA_PUBLIC_KEY") ?? string.Empty,
+                PrivateKey = Environment.GetEnvironmentVariable("RSA_PRIVATE_KEY") ?? string.Empty,
+                FOAEP = false
+            };
+            services.AddTransient(_ => rsaConfig);
+            services.AddTransient<IRsaCryptService,RsaCryptService>();
+        }
     }
 }
