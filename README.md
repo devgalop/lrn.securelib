@@ -32,7 +32,7 @@
 
 ## :dart: About SecureLib
 
-Describe your project
+The Securelib is a simple C# library that provides you with the following features: 
 
 ## :sparkles: Features
 
