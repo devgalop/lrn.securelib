@@ -16,6 +16,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Models
 
         public byte[] GetSigingKey(string key)
         {
+            if (string.IsNullOrEmpty(key)) throw new Exception("Secret key is mandatory");
             return Encoding.UTF8.GetBytes(key);
         }
     }
