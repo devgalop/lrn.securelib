@@ -1,4 +1,5 @@
 using lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions;
+using lrn.devgalop.securelib.Infrastructure.Security.TOTP.Extensions;
 using lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Extensions;
 using lrn.devgalop.securelib.Infrastructure.Security.JWT.Middleware;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddJwtSecurity();
 builder.Services.AddAesEncryption();
 builder.Services.AddRSAEncryption();
+builder.Services.AddTOTP();
 builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
