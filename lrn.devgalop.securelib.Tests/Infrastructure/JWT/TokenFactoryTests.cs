@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace lrn.devgalop.securelib.Tests.Infrastructure.JWT
 {
     public class TokenFactoryTests
     {
+        private string _secretKey;
         private readonly TokenFactoryService _service;
         public TokenFactoryTests()
         {
             _service = new TokenFactoryService();
+            _secretKey = "558ad86aa09727842f6f81a0a84d829b9cc5e7965c0d84415fa5510c306d7cd0";
         }
 
         [Fact]
@@ -81,7 +84,7 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.JWT
         [Fact]
         public void GenerateToken_WithCorrectSecretKey_ReturnsSucceed()
         {
-            string sampleKey = "558ad86aa09727842f6f81a0a84d829b9cc5e7965c0d84415fa5510c306d7cd0";
+            string sampleKey = _secretKey;
             List<ClaimRequest> claimsSamples = new()
             {
                 new ClaimRequest()
@@ -102,6 +105,104 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.JWT
             // Then
             Assert.True(response.IsSucceed);   
             Assert.True(!string.IsNullOrEmpty(response.Token));
+        }
+
+        [Fact]
+        public void ValidateToken_WithTokenEmpty_ReturnsNoSucceed()
+        {
+            // Given
+            string token = string.Empty;
+            var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.ValidateToken(token,parameters);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void ValidateToken_WithTokenInvalid_ReturnsNoSucceed()
+        {
+            // Given
+            string token = "";
+            var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.ValidateToken(token,parameters);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void ValidateToken_WithTokenParametersNull_ReturnsNoSucceed()
+        {
+            // Given
+            string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.6NASL3bMHcx4QMLjQXBGugiP0lHFifhr56DsM1bITkI";
+            var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            TokenValidationParameters? parameters = null;
+
+            // When
+            var response = _service.ValidateToken(token,parameters!);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void ValidateToken_WithCorrectInput_ReturnsSucceed()
+        {
+            // Given
+            string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.6NASL3bMHcx4QMLjQXBGugiP0lHFifhr56DsM1bITkI";
+            var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.ValidateToken(token,parameters);
+
+            // Then
+            Assert.True(response.IsSucceed);
+            Assert.True(response.JwtToken is not null);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Interfac
 {
     public interface IAesCryptService : ICryptService<AesCryptType>
     {
-        byte[] GenerateRandomKey();
+        string GenerateKey();
     }
 }

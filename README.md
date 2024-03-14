@@ -32,15 +32,15 @@
 
 ## :dart: About SecureLib
 
-Describe your project
+The Securelib is a simple C# library that provides you with the following features: 
 
-## :sparkles: Features ##
+## :sparkles: Features
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: Aes encryption - decryption\
+:heavy_check_mark: RSA encryption - decryption\
+:heavy_check_mark: JWT tokens
 
-## :rocket: Technologies ##
+## :rocket: Technologies
 
 The following tools were used in this project:
 
@@ -49,26 +49,29 @@ The following tools were used in this project:
 - [Vs Code](https://code.visualstudio.com/download)
 
 
-## :white_check_mark: Requirements ##
+## :white_check_mark: Requirements
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [.Net 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) installed.
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com), [.Net 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and [Docker](https://www.docker.com/) installed.
 
-## :checkered_flag: Starting ##
+## :checkered_flag: Starting
 
 ```bash
 # Clone this project
 $ git clone https://github.com/devgalop/lrn.securelib
 
 # Access
-$ cd {{repository}}
+$ cd {ROOT_FOLDER}
 
 # Install dependencies
 $ dotnet restore ./lrn.devgalop.securelib.WebApi/lrn.devgalop.securelib.WebApi.csproj
 
-# Run the project
-$ yarn start
+# Build docker image
+$ docker build -t securelib:development --progress=plan --no-cache .
 
-# The server will initialize in the <http://localhost:3000>
+# Run docker-compose
+$ docker-compose -f ./Docker/docker-compose-development.yml up -d
+
+# The server will initialize in the <http://localhost:5200>
 ```
 
 <a href="#top">Back to top</a>
