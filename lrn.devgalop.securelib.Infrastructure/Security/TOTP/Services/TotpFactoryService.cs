@@ -34,6 +34,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
         {
             try
             {
+                ValidParameters();
+
                 var window = CalculateTimeStepFromTimestamp(DateTime.UtcNow);
 
                 var data = GetBigEndianBytes(window);
@@ -71,6 +73,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
         {
             try
             {
+                if(_cryptService is null) throw new ArgumentNullException("To encrypt is mandatory inject the dependency IAesCryptService");
                 var computeResult = Compute();
                 if (!computeResult.IsSucceed) throw new Exception(computeResult.ErrorMessage);
                 var encryptionResult = _cryptService.Encrypt(computeResult.TotpCode, _aesConfig);
@@ -112,6 +115,16 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
         {
             var truncatedValue = ((int)input % (int)Math.Pow(10, digitCount));
             return truncatedValue.ToString().PadLeft(digitCount, '0');
+        }
+
+        private void ValidParameters()
+        {
+            if(_totpParameters is null) throw new Exception("Totp parameters cannot be null");
+            if(_totpParameters.Size <= 0) throw new ArgumentException("Totp parameter size cannot be negative number");
+            if(_totpParameters.ValidFor <= 0) throw new ArgumentException("Totp parameter valid for cannot be negative number");
+            if(_aesConfig is null)throw new Exception("Aes configuration cannot be null");
+            if(string.IsNullOrEmpty(_aesConfig.KeyValue)) throw new ArgumentException("Aes key cannot be null or empty");
+            if(_epochTicksValues is null)throw new Exception("Epoch ticks constants cannot be null");
         }
     }
 }
