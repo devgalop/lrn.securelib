@@ -48,6 +48,15 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
 
             return result;
         }
+
+        public string ComputeEncrypted()
+        {
+            var computeResult = Compute();
+            var encryptionResult = _cryptService.Encrypt(computeResult,_aesConfig);
+            if(!encryptionResult.IsSucceed) throw new Exception(encryptionResult.ErrorMessage);
+            return encryptionResult.Text ?? computeResult;
+        }
+
         private byte[] GetBigEndianBytes(long input)
         {
             // Since .net uses little endian numbers, we need to reverse the byte order to get big endian.
