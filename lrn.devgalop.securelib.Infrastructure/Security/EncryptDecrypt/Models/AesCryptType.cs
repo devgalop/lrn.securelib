@@ -12,8 +12,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Models
     {
         public string KeyValue { get; set; } = string.Empty;
         public string IVValue { get; set; } = string.Empty;
-        public byte[]? Key => GenerateRandomKey(KeyValue);
-        public byte[]? IV => GenerateRandomKey(IVValue);
+        public byte[] Key => GenerateRandomKey(KeyValue);
+        public byte[] IV => GenerateRandomKey(IVValue);
 
         public byte[] GenerateRandomKey(string value)
         {
