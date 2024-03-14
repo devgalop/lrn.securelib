@@ -7,11 +7,12 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Interfaces;
 using lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Models;
+using lrn.devgalop.securelib.Infrastructure.Security.TOTP.Interfaces;
 using lrn.devgalop.securelib.Infrastructure.Security.TOTP.Models;
 
 namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
 {
-    public class TotpFactoryService
+    public class TotpFactoryService : ITotpFactoryService
     {
         private readonly EpochTicks _epochTicksValues;
         private readonly TotpParameters _totpParameters;
@@ -26,35 +27,70 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
             _totpParameters = totpParameters;
             _aesConfig = aesConfig;
             _cryptService = cryptService;
-            _epochTicksValues = epochTicksValues;   
+            _epochTicksValues = epochTicksValues;
         }
 
-        public string Compute()
+        public TotpResponse Compute()
         {
-            var window = CalculateTimeStepFromTimestamp(DateTime.UtcNow);
+            try
+            {
+                var window = CalculateTimeStepFromTimestamp(DateTime.UtcNow);
 
-            var data = GetBigEndianBytes(window);
+                var data = GetBigEndianBytes(window);
 
-            var hmac = new HMACSHA1 {Key = _aesConfig.Key};
-            var hmacComputedHash = hmac.ComputeHash(data);
+                var hmac = new HMACSHA1 { Key = _aesConfig.Key };
+                var hmacComputedHash = hmac.ComputeHash(data);
 
-            var offset = hmacComputedHash[hmacComputedHash.Length - 1] & 0x0F;
-            var otp = (hmacComputedHash[offset] & 0x7f) << 24
-                      | (hmacComputedHash[offset + 1] & 0xff) << 16
-                      | (hmacComputedHash[offset + 2] & 0xff) << 8
-                      | (hmacComputedHash[offset + 3] & 0xff) % 1000000;
+                var offset = hmacComputedHash[hmacComputedHash.Length - 1] & 0x0F;
+                var otp = (hmacComputedHash[offset] & 0x7f) << 24
+                          | (hmacComputedHash[offset + 1] & 0xff) << 16
+                          | (hmacComputedHash[offset + 2] & 0xff) << 8
+                          | (hmacComputedHash[offset + 3] & 0xff) % 1000000;
 
-            var result = Digits(otp, _totpParameters.Size);
+                var result = Digits(otp, _totpParameters.Size);
 
-            return result;
+                return new()
+                {
+                    IsSucceed = true,
+                    TotpCode = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+
         }
 
-        public string ComputeEncrypted()
+        public TotpResponse ComputeEncrypted()
         {
-            var computeResult = Compute();
-            var encryptionResult = _cryptService.Encrypt(computeResult,_aesConfig);
-            if(!encryptionResult.IsSucceed) throw new Exception(encryptionResult.ErrorMessage);
-            return encryptionResult.Text ?? computeResult;
+            try
+            {
+                var computeResult = Compute();
+                if (!computeResult.IsSucceed) throw new Exception(computeResult.ErrorMessage);
+                var encryptionResult = _cryptService.Encrypt(computeResult.TotpCode, _aesConfig);
+                if (!encryptionResult.IsSucceed) throw new Exception(encryptionResult.ErrorMessage);
+                return new()
+                { 
+                    IsSucceed = true,
+                    TotpCode = encryptionResult.Text ?? computeResult.TotpCode
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+
         }
 
         private byte[] GetBigEndianBytes(long input)
@@ -74,7 +110,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Services
 
         private string Digits(long input, int digitCount)
         {
-            var truncatedValue = ((int) input % (int) Math.Pow(10, digitCount));
+            var truncatedValue = ((int)input % (int)Math.Pow(10, digitCount));
             return truncatedValue.ToString().PadLeft(digitCount, '0');
         }
     }
