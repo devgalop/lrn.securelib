@@ -39,7 +39,7 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.EncryptDecrypt
         }
 
         [Fact]
-        public void Encrypt_WithAesConfigEmpty_ReturnsSucceed()
+        public void Encrypt_WithAesConfigEmpty_ReturnsNoSucceed()
         {
             string text = "This is my test";
             AesCryptType aesConfig = new();
@@ -48,12 +48,12 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.EncryptDecrypt
             var response = _cryptService.Encrypt(text,aesConfig);
 
             // Then
-            Assert.True(response.IsSucceed);
-            Assert.True(!string.IsNullOrEmpty(response.Text));
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
         }
 
         [Fact]
-        public void Encrypt_WithNoKey_ReturnsSucceed()
+        public void Encrypt_WithNoKey_ReturnsNoSucceed()
         {
             string text = "This is my test";
             AesCryptType aesConfig = _aesConfig;
@@ -63,12 +63,12 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.EncryptDecrypt
             var response = _cryptService.Encrypt(text,aesConfig);
 
             // Then
-            Assert.True(response.IsSucceed);
-            Assert.True(!string.IsNullOrEmpty(response.Text));
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
         }
 
         [Fact]
-        public void Encrypt_WithNoIV_ReturnsSucceed()
+        public void Encrypt_WithNoIV_ReturnsNoSucceed()
         {
             string text = "This is my test";
             AesCryptType aesConfig = _aesConfig;
@@ -78,14 +78,15 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.EncryptDecrypt
             var response = _cryptService.Encrypt(text,aesConfig);
 
             // Then
-            Assert.True(response.IsSucceed);
-            Assert.True(!string.IsNullOrEmpty(response.Text));
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
         }
 
         [Fact]
         public void Encrypt_WithCorrectParameters_ReturnsSucceed()
         {
             string text = "This is my test";
+            string textEncrypted = "HwESoNs/wtUF2gKeweOVpw==";
             AesCryptType aesConfig = _aesConfig;
             
             // When
@@ -94,6 +95,113 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.EncryptDecrypt
             // Then
             Assert.True(response.IsSucceed);
             Assert.True(!string.IsNullOrEmpty(response.Text));
+            Assert.Equal(response.Text, textEncrypted);
+        }
+
+        [Fact]
+        public void Encrypt_WithAesParameterNull_ReturnsNoSucceed()
+        {
+            string text = "This is my test";
+            AesCryptType aesConfig = null!;
+            
+            // When
+            var response = _cryptService.Encrypt(text,aesConfig!);
+
+            // Then
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
+        }
+
+        [Fact]
+        public void Decrypt_WithEmptyText_ReturnsNoSuceed()
+        {
+             // Given
+            string text = string.Empty;
+            AesCryptType aesConfig = _aesConfig;
+
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void Decrypt_WithAesConfigEmpty_ReturnsNoSuceed()
+        {
+            // Given
+            string text = "HwESoNs/wtUF2gKeweOVpw==";
+            AesCryptType aesConfig = new();
+
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
+        }
+
+        [Fact]
+        public void Decrypt_WithKeyEmpty_ReturnsNoSuceed()
+        {
+            // Given
+            string text = string.Empty;
+            AesCryptType aesConfig = _aesConfig;
+
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
+        }
+
+        [Fact]
+        public void Decrypt_WithIVEmpty_ReturnsNoSuceed()
+        {
+            // Given
+            string text = "HwESoNs/wtUF2gKeweOVpw==";
+            AesCryptType aesConfig = _aesConfig;
+            aesConfig.IVValue = string.Empty;
+
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
+        }
+
+        [Fact]
+        public void Decrypt_WithCorrectParameters_ReturnsSuceed()
+        {
+            // Given
+            string originalText = "This is my test";
+            string text = "HwESoNs/wtUF2gKeweOVpw==";
+            AesCryptType aesConfig = _aesConfig;
+            
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.True(response.IsSucceed);
+            Assert.True(!string.IsNullOrEmpty(response.Text));
+            Assert.Equal(response.Text , originalText);
+        }
+
+        [Fact]
+        public void Decrypt_WithAesParameterNull_ReturnsNoSuceed()
+        {
+            // Given
+            string text = "HwESoNs/wtUF2gKeweOVpw==";
+            AesCryptType aesConfig = null!;
+            
+            // When
+            var response = _cryptService.Decrypt(text,aesConfig);
+
+            // Then
+            Assert.False(response.IsSucceed);
+            Assert.True(string.IsNullOrEmpty(response.Text));
         }
     }
 }
