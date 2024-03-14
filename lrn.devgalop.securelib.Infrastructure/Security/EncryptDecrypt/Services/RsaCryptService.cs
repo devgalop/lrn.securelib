@@ -23,8 +23,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             try
             {
                 if(string.IsNullOrEmpty(textEncrypted))throw new ArgumentNullException("Text to decrypt cannot be null");
-                if(cryptParams is null) cryptParams = _cryptType;
-                
+                if(cryptParams is null) throw new ArgumentNullException("RSA validation parameters cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.PrivateKey)) throw new ArgumentNullException("Private key is mandatory");
                 byte[] decryptedData;
 
                 using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
@@ -55,7 +55,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             try
             {
                 if(string.IsNullOrEmpty(inputText))throw new ArgumentNullException("Text to encrypt cannot be null");
-                if(cryptParams is null) cryptParams = _cryptType;
+                if(cryptParams is null) throw new ArgumentNullException("RSA validation parameters cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.PublicKey)) throw new ArgumentNullException("Public key is mandatory");
 
                 byte[] encryptedData;
 
