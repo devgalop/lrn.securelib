@@ -113,7 +113,16 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             }
         }
 
-        public byte[] GenerateRandomKey()
+        public string GenerateKey()
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedText = sha256.ComputeHash(GenerateRandomKey());
+                return BitConverter.ToString(hashedText).Replace("-", "");
+            }
+        }
+
+        private byte[] GenerateRandomKey()
         {
             byte[] key = new byte[16]; // 128 bits
             using (var rng = RandomNumberGenerator.Create())
@@ -122,5 +131,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             }
             return key;
         }
+
+
     }
 }
