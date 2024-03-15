@@ -2,13 +2,13 @@
 <h1 align="center">SecureLib</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/devgalop/lrn.securelib?color=56BEB8">
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/devgalop/lrn.securelib?color=56BEB8">
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/devgalop/lrn.securelib?color=56BEB8">
-  <img alt="License" src="https://img.shields.io/github/license/devgalop/lrn.securelib?color=56BEB8">
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{github}}/{{repository}}?color=56BEB8" /> -->
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{github}}/{{repository}}?color=56BEB8" /> -->
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{github}}/{{repository}}?color=56BEB8" /> -->
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/devgalop/lrn.securelib?color=4bcab1">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/devgalop/lrn.securelib?color=34df99">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/devgalop/lrn.securelib?color=4bcab1">
+  <img alt="License" src="https://img.shields.io/github/license/devgalop/lrn.securelib?color=34df99">
+  <img alt="Github issues" src="https://img.shields.io/github/issues/devgalop/lrn.securelib?color=f65226" /> 
+  <img alt="Github forks" src="https://img.shields.io/github/forks/devgalop/lrn.securelib?color=56BEB8" />
+  <img alt="Github stars" src="https://img.shields.io/github/stars/devgalop/lrn.securelib?color=56BEB8" />
 </p>
 
 <!-- Status -->
@@ -31,7 +31,7 @@
 
 ## :dart: About SecureLib
 
-The Securelib is a simple C# library that provides you with the following features: 
+The Securelib is a simple C# library, developed with .Net 8 but fully compatible with .Net 6+, that provides you with the following features: 
 
 ## :sparkles: Features
 
