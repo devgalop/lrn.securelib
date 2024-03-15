@@ -23,8 +23,9 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             try
             {
                 if (string.IsNullOrEmpty(textEncrypted)) throw new ArgumentNullException("Text to decrypt is empty");
-                if (cryptParams is null) cryptParams = _aesConfig;
-
+                if (cryptParams is null) throw new ArgumentNullException("Encryption configurations cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.KeyValue)) throw new ArgumentNullException("Secret key value cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.IVValue)) throw new ArgumentNullException("IV value cannot be null");
                 string decrypted;
                 byte[] cipherText = Convert.FromBase64String(textEncrypted);
 
@@ -71,7 +72,9 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Services
             try
             {
                 if (string.IsNullOrEmpty(inputText)) throw new ArgumentNullException("Text to encrypt is empty");
-                if (cryptParams is null) cryptParams = _aesConfig;
+                if (cryptParams is null) throw new ArgumentNullException("Encryption configurations cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.KeyValue)) throw new ArgumentNullException("Secret key value cannot be null");
+                if(string.IsNullOrEmpty(cryptParams.IVValue)) throw new ArgumentNullException("IV value cannot be null");
                 byte[] encrypted;
                 using (Aes aes = Aes.Create())
                 {
