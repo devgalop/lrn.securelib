@@ -9,7 +9,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.TOTP.Models
     public class TotpParameters
     {
         public TimeSpan ValidForTimeSpan { get; set; }
-        public int Size { get; set; } = 4;
+        public int Size { get; set; } = 6;
         public int ValidFor => ValidForTimeSpan.Seconds;
     }
 }
