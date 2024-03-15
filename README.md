@@ -80,7 +80,7 @@ $ docker-compose -f ./Docker/docker-compose-development.yml up -d
 If you need to use any of the libraries in the project, follow the steps below:
 
 1. Select the folder(s) you want to use and import them into your code.
-2. Each library has an 'Extensions' folder where you can find all the necessary configurations for using the library. Call the method(s) you need in the Program.cs file.
+2. Each library has an 'Extensions' folder where you can find all the necessary configurations for using the library. Call the method(s) you need in the *Program.cs* file.
 ```bash
   # Use JWT Authentication tokens
   builder.Services.AddJwtSecurity();
@@ -94,8 +94,11 @@ If you need to use any of the libraries in the project, follow the steps below:
   # Use TOTP codes
   # IMPORTANT: TOTP uses the AesEncryption library for encrypting its codes.
   builder.Services.AddTOTP();
+
+  #IMPORTANT: If you need to use JWT tokens, configure the middleware as follows
+  app.UseMiddleware<JwtAuthenticationMiddelware>();
 ```
-3. Every library uses environment variables. Add them to your project for correct library execution.For development enviroment you can use the launchSettings.json file.
+3. Every library uses environment variables. Add them to your project for correct library execution.For development enviroment you can use the *launchSettings.json* file.
 
 
 <a href="#top">Back to top</a>
