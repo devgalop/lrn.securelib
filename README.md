@@ -37,7 +37,7 @@ The Securelib is a simple C# library that provides you with the following featur
 
 :heavy_check_mark: Aes Encryption/Decryption\
 :heavy_check_mark: RSA Encryption/Decryption\
-:heavy_check_mark: JWT Authentication tokens
+:heavy_check_mark: JWT Authentication tokens\
 :heavy_check_mark: TOTP Code
 
 ## :rocket: Technologies
