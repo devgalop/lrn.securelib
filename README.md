@@ -24,8 +24,7 @@
   <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
-  <a href="https://github.com/devgalop" target="_blank">Author</a>
+  <a href="#checkered_flag-starting">Starting</a>
 </p>
 
 <br>
@@ -36,22 +35,23 @@ The Securelib is a simple C# library that provides you with the following featur
 
 ## :sparkles: Features
 
-:heavy_check_mark: Aes encryption - decryption\
-:heavy_check_mark: RSA encryption - decryption\
-:heavy_check_mark: JWT tokens
+:heavy_check_mark: Aes Encryption/Decryption\
+:heavy_check_mark: RSA Encryption/Decryption\
+:heavy_check_mark: JWT Authentication tokens
+:heavy_check_mark: TOTP Code
 
 ## :rocket: Technologies
 
 The following tools were used in this project:
 
-- [.Net 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [DotNet 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Docker](https://www.docker.com/)
 - [Vs Code](https://code.visualstudio.com/download)
 
 
 ## :white_check_mark: Requirements
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com), [.Net 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and [Docker](https://www.docker.com/) installed.
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com), [DotNet 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and [Docker](https://www.docker.com/) installed.
 
 ## :checkered_flag: Starting
 
@@ -66,12 +66,36 @@ $ cd {ROOT_FOLDER}
 $ dotnet restore ./lrn.devgalop.securelib.WebApi/lrn.devgalop.securelib.WebApi.csproj
 
 # Build docker image
-$ docker build -t securelib:development --progress=plan --no-cache .
+$ docker build -t securelib:development .
 
 # Run docker-compose
 $ docker-compose -f ./Docker/docker-compose-development.yml up -d
 
 # The server will initialize in the <http://localhost:5200>
 ```
+<br>
+
+## :question: How to use it?
+
+If you need to use any of the libraries in the project, follow the steps below:
+
+1. Select the folder(s) you want to use and import them into your code.
+2. Each library has an 'Extensions' folder where you can find all the necessary configurations for using the library. Call the method(s) you need in the Program.cs file.
+```bash
+  # Use JWT Authentication tokens
+  builder.Services.AddJwtSecurity();
+
+  # Use Aes Encryption/Decryption methods
+  builder.Services.AddAesEncryption();
+
+  # Use Rsa Encryption/Decryption methods
+  builder.Services.AddRSAEncryption();
+
+  # Use TOTP codes
+  # IMPORTANT: TOTP uses the AesEncryption library for encrypting its codes.
+  builder.Services.AddTOTP();
+```
+3. Every library uses environment variables. Add them to your project for correct library execution.For development enviroment you can use the launchSettings.json file.
+
 
 <a href="#top">Back to top</a>
