@@ -16,7 +16,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Interfaces
         /// <param name="claims">List of token claims</param>
         /// <param name="duration">Duration of the token in seconds</param>
         /// <returns></returns>
-        TokenReponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60);
+        TokenResponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60);
 
         /// <summary>
         /// Validate existing JWT Token
@@ -25,5 +25,12 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Interfaces
         /// <param name="tokenValidationParameters">Parameters to be validated</param>
         /// <returns></returns>
         TokenValidationResponse ValidateToken(string token, TokenValidationParameters tokenValidationParameters);
+
+        /// <summary>
+        /// Generate a base 64 string with the token generated
+        /// </summary>
+        /// <param name="durationInMinutes">Duration of token in minutes</param>
+        /// <returns></returns>
+        TokenResponse GenerateRefreshToken(int durationInMinutes);
     }
 }

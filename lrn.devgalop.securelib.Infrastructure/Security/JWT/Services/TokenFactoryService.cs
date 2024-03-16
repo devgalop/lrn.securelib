@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using lrn.devgalop.securelib.Infrastructure.Security.JWT.Interfaces;
@@ -18,7 +19,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
             
         }
 
-        public TokenReponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60)
+        public TokenResponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60)
         {
             try
             {
@@ -84,6 +85,32 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
                     ErrorDescription = ex.ToString()
                 };
             }
+        }
+
+        public TokenResponse GenerateRefreshToken(int durationInMinutes)
+        {
+            try
+            {
+                var randomNumber = new byte[64];
+                using var rng = RandomNumberGenerator.Create();
+                rng.GetBytes(randomNumber);
+                return new()
+                {
+                    IsSucceed = true,
+                    Token = Convert.ToBase64String(randomNumber),
+                    Expiration = DateTime.UtcNow.AddMinutes(durationInMinutes)
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+            
         }
 
         private bool isValidSecretKey(string key)
