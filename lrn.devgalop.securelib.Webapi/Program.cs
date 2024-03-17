@@ -2,9 +2,11 @@ using lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions;
 using lrn.devgalop.securelib.Infrastructure.Security.TOTP.Extensions;
 using lrn.devgalop.securelib.Infrastructure.Security.EncryptDecrypt.Extensions;
 using lrn.devgalop.securelib.Infrastructure.Security.JWT.Middleware;
+using lrn.devgalop.securelib.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCustomServices();
 builder.Services.AddJwtSecurity();
 builder.Services.AddAesEncryption();
 builder.Services.AddRSAEncryption();
