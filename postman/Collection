@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "6582f81d-18b1-4c69-a873-b129599fc1b4",
+		"name": "SecureLib",
+		"description": "StartFragmentThe Securelib is a simple C# library, developed with .Net 8 but fully  \ncompatible with .Net 6+, that provides you with the following features: JWT Tokens, Aes Encryption, RSA Encryption, TOTP codes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33500186"
+	},
+	"item": [
+		{
+			"name": "HealthCheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}:5200/healthy",
+					"host": [
+						"{{URL}}"
+					],
+					"port": "5200",
+					"path": [
+						"healthy"
+					]
+				},
+				"description": "Check if the service is running"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\":\"devgalop\",\r\n    \"Password\":\"admin1234*\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}:5200/api/Auth",
+					"host": [
+						"{{URL}}"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"Auth"
+					]
+				},
+				"description": "Login into the application"
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJHZW5kZXIiOiJNIiwibmJmIjoxNzEwNzExNjcwLCJleHAiOjE3MTA3MTE3MzAsImlhdCI6MTcxMDcxMTY3MH0.VLgXTGIEghj6loxQtN6erpqk5btD7l_zkdQIvh7ZkDU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}:5200/api/Token",
+					"host": [
+						"{{URL}}"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"Token"
+					]
+				},
+				"description": "Try to refresh the expired JWT token"
+			},
+			"response": []
+		}
+	]
+}
