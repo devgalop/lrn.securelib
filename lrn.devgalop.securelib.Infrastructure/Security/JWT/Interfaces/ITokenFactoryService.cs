@@ -32,5 +32,13 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Interfaces
         /// <param name="durationInMinutes">Duration of token in minutes</param>
         /// <returns></returns>
         TokenResponse GenerateRefreshToken(int durationInMinutes);
+        
+        /// <summary>
+        /// Get all claims from a specific token
+        /// </summary>
+        /// <param name="token">User token</param>
+        /// <param name="tokenValidationParameters">Parameters to be validated</param>
+        /// <returns></returns>
+        ClaimsResponse GetClaimsFromExpiredToken(string token, TokenValidationParameters tokenValidationParameters);
     }
 }

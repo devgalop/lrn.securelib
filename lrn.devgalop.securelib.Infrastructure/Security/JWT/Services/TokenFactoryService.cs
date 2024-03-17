@@ -113,6 +113,34 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
             
         }
 
+        public ClaimsResponse GetClaimsFromExpiredToken(string token, TokenValidationParameters tokenValidationParameters)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(token)) throw new Exception("Token cannot be null or empty");
+                if(tokenValidationParameters is null) throw new Exception("Token validation parameters are required");
+                tokenValidationParameters.ValidateLifetime = false;
+                var validationResponse = ValidateToken(token, tokenValidationParameters);
+                if(!validationResponse.IsSucceed) throw new Exception(validationResponse.ErrorMessage);
+                var claims = validationResponse.JwtToken?.Claims;
+                if(claims is null || claims.Count() == 0) throw new Exception("There aren't claims to return");
+                return new()
+                {
+                   IsSucceed = true,
+                   Claims = claims  
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+        }
+
         private bool isValidSecretKey(string key)
         {
             return !string.IsNullOrEmpty(key);
