@@ -82,6 +82,9 @@ If you need to use any of the libraries in the project, follow the steps below:
 1. Select the folder(s) you want to use and import them into your code.
 2. Each library has an 'Extensions' folder where you can find all the necessary configurations for using the library. Call the method(s) you need in the *Program.cs* file.
 ```bash
+  # Use Core Services
+  builder.Services.AddCustomServices();
+  
   # Use JWT Authentication tokens
   builder.Services.AddJwtSecurity();
 
