@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Models
 {
-    public class TokenReponse : BaseResponse
+    public class ClaimsResponse : BaseResponse
     {
-        public string Token { get; set; } = string.Empty;
-        public DateTime Expiration { get; set; }
+        public IEnumerable<Claim> Claims { get; set; } = new List<Claim>();
     }
 }

@@ -18,17 +18,27 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions
         {
             TokenConfiguration config = new()
             {
-                SecretKey = Environment.GetEnvironmentVariable("AUTH_SECRET_KEY") ?? string.Empty
+                SecretKey = Environment.GetEnvironmentVariable("AUTH_SECRET_KEY") ?? string.Empty,
+                ValidateLifeTime = true,
+                ValidateIssuerSigningKey = true,
+                RefreshTokenTimeExpiration = 3 //Time in minutes
             };
             services.AddTransient(_=> config);
             services.AddTransient<ITokenFactoryService, TokenFactoryService>();
 
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie(opt => 
+                {
+                    opt.Cookie.HttpOnly = true;
+                    opt.Cookie.Name = "jwtRefreshToken";
+                    opt.Cookie.Expiration = TimeSpan.FromHours(2);
+                })
                 .AddJwtBearer(opt =>
                 {
                     var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
                     opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
                     //Remeber those conditions when send to validate the token in middleware
                     opt.TokenValidationParameters = new TokenValidationParameters()
                     {
@@ -36,7 +46,8 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions
                         ValidateIssuer = config.ValidateIssuer,
                         ValidateLifetime = config.ValidateLifeTime,
                         ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
-                        IssuerSigningKey = signingKey
+                        IssuerSigningKey = signingKey,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
             

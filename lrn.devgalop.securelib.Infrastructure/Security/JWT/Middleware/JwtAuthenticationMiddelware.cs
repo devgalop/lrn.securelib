@@ -28,8 +28,15 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            if (token is not null)
+            var token = httpContext.Request.Headers["Authorization"]
+                                .FirstOrDefault()?
+                                .Split(" ")
+                                .Last();
+            var refreshToken = httpContext.Request.Cookies
+                                .Where(c => c.Key == "jwtRefreshToken")
+                                .Select(c => c.Value)
+                                .FirstOrDefault();
+            if (token is not null && refreshToken is not null)
             {
                 var validationResponse = _tokenFactoryService.ValidateToken(token, new()
                 {
@@ -38,6 +45,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Middleware
                     ValidateIssuer = _tokenConfiguration.ValidateIssuer,
                     ValidateLifetime = _tokenConfiguration.ValidateLifeTime,
                     ValidateIssuerSigningKey = _tokenConfiguration.ValidateIssuerSigningKey,
+                    ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(_tokenConfiguration.GetSigingKey(_tokenConfiguration.SecretKey)),
                 });
                 //Add logic after validation 
