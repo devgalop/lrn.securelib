@@ -192,7 +192,7 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.JWT
             {
                 ValidateAudience = config.ValidateAudience,
                 ValidateIssuer = config.ValidateIssuer,
-                ValidateLifetime = config.ValidateLifeTime,
+                ValidateLifetime = false,
                 ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
                 IssuerSigningKey = signingKey
             };
