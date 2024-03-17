@@ -24,8 +24,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseMiddleware<JwtAuthenticationMiddelware>();
+app.UseAuthorization();
+
 
 app.MapControllers();
 app.MapHealthChecks("/healthy");
