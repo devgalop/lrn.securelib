@@ -204,5 +204,143 @@ namespace lrn.devgalop.securelib.Tests.Infrastructure.JWT
             Assert.True(response.IsSucceed);
             Assert.True(response.JwtToken is not null);
         }
+
+        [Fact]
+        public void GenerateRefreshToken_WithNegativeDuration_ReturnsNoSuceed()
+        {
+            // Given
+            int duration = -1;
+
+            // When
+            var response = _service.GenerateRefreshToken(duration);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void GenerateRefreshToken_WithZeroDuration_ReturnsNoSuceed()
+        {
+            // Given
+            int duration = 0;
+
+            // When
+            var response = _service.GenerateRefreshToken(duration);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void GenerateRefreshToken_WithCorrectDuration_ReturnsSuceed()
+        {
+            // Given
+            int duration = 2;
+
+            // When
+            var response = _service.GenerateRefreshToken(duration);
+
+            // Then
+            Assert.True(response.IsSucceed);
+            Assert.True(!string.IsNullOrEmpty(response.Token));
+        }
+
+        [Fact]
+        public void GetClaimsFromExpiredToken_WithEmptyToken_ReturnsNoSuceed()
+        {
+            // Given
+            string token = string.Empty;
+             var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.GetClaimsFromExpiredToken(token, parameters);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void GetClaimsFromExpiredToken_WithNullToken_ReturnsNoSuceed()
+        {
+            // Given
+            string token = null!;
+             var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.GetClaimsFromExpiredToken(token, parameters);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void GetClaimsFromExpiredToken_WithNullParameters_ReturnsNoSuceed()
+        {
+            // Given
+            string token = string.Empty;
+             var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            TokenValidationParameters parameters = null!;
+
+            // When
+            var response = _service.GetClaimsFromExpiredToken(token, parameters);
+
+            // Then
+            Assert.False(response.IsSucceed);
+        }
+
+        [Fact]
+        public void GetClaimsFromExpiredToken_WithCorrectParameters_ReturnsSuceed()
+        {
+            // Given
+            string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.6NASL3bMHcx4QMLjQXBGugiP0lHFifhr56DsM1bITkI";
+             var config = new TokenConfiguration()
+            {
+                SecretKey = _secretKey
+            };
+            var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));
+            var parameters = new TokenValidationParameters()
+            {
+                ValidateAudience = config.ValidateAudience,
+                ValidateIssuer = config.ValidateIssuer,
+                ValidateLifetime = config.ValidateLifeTime,
+                ValidateIssuerSigningKey = config.ValidateIssuerSigningKey,
+                IssuerSigningKey = signingKey
+            };
+
+            // When
+            var response = _service.GetClaimsFromExpiredToken(token, parameters);
+
+            // Then
+            Assert.True(response.IsSucceed);
+            Assert.True(response.Claims.Any());        
+        }
     }
 }

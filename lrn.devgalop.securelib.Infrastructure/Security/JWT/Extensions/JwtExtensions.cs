@@ -25,6 +25,12 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions
 
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie(opt => 
+                {
+                    opt.Cookie.HttpOnly = true;
+                    opt.Cookie.Name = "jwtRefreshToken";
+                    opt.Cookie.Expiration = TimeSpan.FromHours(2);
+                })
                 .AddJwtBearer(opt =>
                 {
                     var signingKey = new SymmetricSecurityKey(config.GetSigingKey(config.SecretKey));

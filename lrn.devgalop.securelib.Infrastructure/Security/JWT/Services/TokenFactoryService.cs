@@ -91,6 +91,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
         {
             try
             {
+                if(durationInMinutes<=0) throw new Exception("Refresh token expiration time cannot be negative or less than 1 minute.");
                 var randomNumber = new byte[64];
                 using var rng = RandomNumberGenerator.Create();
                 rng.GetBytes(randomNumber);
