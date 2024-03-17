@@ -18,7 +18,10 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Extensions
         {
             TokenConfiguration config = new()
             {
-                SecretKey = Environment.GetEnvironmentVariable("AUTH_SECRET_KEY") ?? string.Empty
+                SecretKey = Environment.GetEnvironmentVariable("AUTH_SECRET_KEY") ?? string.Empty,
+                ValidateLifeTime = true,
+                ValidateIssuerSigningKey = true,
+                RefreshTokenTimeExpiration = 3 //Time in minutes
             };
             services.AddTransient(_=> config);
             services.AddTransient<ITokenFactoryService, TokenFactoryService>();
