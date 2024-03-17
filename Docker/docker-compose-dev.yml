@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   secure-lib:
-    image: lrn.securelib:development
+    image: securelib:development
     build:
       context: ../
       dockerfile: ./Dockerfile
