@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using lrn.devgalop.securelib.Infrastructure.Security.JWT.Interfaces;
@@ -18,7 +19,7 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
             
         }
 
-        public TokenReponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60)
+        public TokenResponse GenerateToken(string secretKey, List<ClaimRequest> claims, int duration = 60)
         {
             try
             {
@@ -73,6 +74,61 @@ namespace lrn.devgalop.securelib.Infrastructure.Security.JWT.Services
                 {
                     IsSucceed = true,
                     JwtToken = jwtToken
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+        }
+
+        public TokenResponse GenerateRefreshToken(int durationInMinutes)
+        {
+            try
+            {
+                if(durationInMinutes<=0) throw new Exception("Refresh token expiration time cannot be negative or less than 1 minute.");
+                var randomNumber = new byte[64];
+                using var rng = RandomNumberGenerator.Create();
+                rng.GetBytes(randomNumber);
+                return new()
+                {
+                    IsSucceed = true,
+                    Token = Convert.ToBase64String(randomNumber),
+                    Expiration = DateTime.UtcNow.AddMinutes(durationInMinutes)
+                };
+            }
+            catch (Exception ex)
+            {
+                return new()
+                {
+                    IsSucceed = false,
+                    ErrorMessage = ex.Message,
+                    ErrorDescription = ex.ToString()
+                };
+            }
+            
+        }
+
+        public ClaimsResponse GetClaimsFromExpiredToken(string token, TokenValidationParameters tokenValidationParameters)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(token)) throw new Exception("Token cannot be null or empty");
+                if(tokenValidationParameters is null) throw new Exception("Token validation parameters are required");
+                tokenValidationParameters.ValidateLifetime = false;
+                var validationResponse = ValidateToken(token, tokenValidationParameters);
+                if(!validationResponse.IsSucceed) throw new Exception(validationResponse.ErrorMessage);
+                var claims = validationResponse.JwtToken?.Claims;
+                if(claims is null || claims.Count() == 0) throw new Exception("There aren't claims to return");
+                return new()
+                {
+                   IsSucceed = true,
+                   Claims = claims  
                 };
             }
             catch (Exception ex)
