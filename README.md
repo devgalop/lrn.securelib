@@ -62,6 +62,15 @@ $ git clone https://github.com/devgalop/lrn.securelib
 # Access
 $ cd {ROOT_FOLDER}
 
+#Create own solution
+dotnet new sln -n lrn.devgalop.securelib
+
+# Assign projects to solution
+dotnet sln add ./lrn.devgalop.securelib.Core/lrn.devgalop.securelib.Core.csproj
+dotnet sln add ./lrn.devgalop.securelib.Infrastructure/lrn.devgalop.securelib.Infrastructure.csproj
+dotnet sln add ./lrn.devgalop.securelib.Webapi/lrn.devgalop.securelib.Webapi.csproj
+dotnet sln add ./lrn.devgalop.securelib.Tests/lrn.devgalop.securelib.Tests.csproj
+
 # Install dependencies
 $ dotnet restore ./lrn.devgalop.securelib.WebApi/lrn.devgalop.securelib.WebApi.csproj
 
